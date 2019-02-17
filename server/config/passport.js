@@ -1,5 +1,3 @@
-// config/passport.js
-
 // load all the things we need
 var FacebookStrategy = require('passport-facebook').Strategy
 var GoogleStrategy = require('passport-google-oauth2').Strategy
@@ -9,7 +7,6 @@ var User = require('../model/sso.model')
 // load the auth variables
 var configAuth = require('./config.sso')
 
-// expose this function to our app using module.exports
 module.exports = function (passport) {
   passport.serializeUser(function (user, done) {
     done(null, user.id)
@@ -23,12 +20,12 @@ module.exports = function (passport) {
   })
 
   passport.use(new FacebookStrategy({
-    // pull in our app id and secret from our auth.js file
     clientID: configAuth.facebookAuth.clientID,
     clientSecret: configAuth.facebookAuth.clientSecret,
     callbackURL: configAuth.facebookAuth.callbackURL
 
   }, (accessToken, refreshToken, profile, done) => {
+    console.log(configAuth.facebookAuth.callbackURL)
     process.nextTick(function () {
       User.findOne({
         'facebook.id': profile.id
@@ -40,7 +37,6 @@ module.exports = function (passport) {
           return done(null, user)
         } else {
           var newUser = new User()
-          console.log(profile)
           newUser.facebook.id = profile.id
           newUser.facebook.token = accessToken
           newUser.facebook.name = profile.displayName
@@ -63,7 +59,7 @@ module.exports = function (passport) {
     callbackURL: configAuth.googleAuth.callbackURL,
     passReqToCallback: true
   }, (request, accessToken, refreshToken, profile, done) => {
-    console.log(profile)
+    console.log(configAuth.facebookAuth.callbackURL)
     process.nextTick(function () {
       User.findOne({
         'google.id': profile.id
@@ -71,9 +67,8 @@ module.exports = function (passport) {
         if (err) {
           return done(err)
         }
-        // if the user is found, then log them in
         if (user) {
-          return done(null, user) // user found, return that user
+          return done(null, user)
         } else {
           var newUser = new User()
           // set all of the facebook information in our user model

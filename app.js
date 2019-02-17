@@ -86,11 +86,16 @@ db.once('open', () => {
 const bookRoute = require('./server/routes/book.route.js')
 const userRoute = require('./server/routes/user.route.js')
 app.use('/book', bookRoute)
-app.use('', userRoute)
+app.use('/log', userRoute)
+const BASE_URL = process.env.DEV_URL_API || process.env.PROD_URL_API
 
 app.get('/', (req, res, next) => {
   let randomStr = uuid()
-  res.send(`randomString: ${randomStr}, sessionId:  ${req.sessionID}`)
+  res.send(`
+    randomString: ${randomStr},
+    sessionId:  ${req.sessionID},
+    environment: ${BASE_URL}
+  `)
 })
 
 const isLoggedIn = require('./server/middleware/isLoggedIn.middleware')
@@ -130,4 +135,5 @@ app.get('/auth/google/callback',
     successRedirect: '/profile',
     failureRedirect: '/'
   }))
+
 module.exports = app

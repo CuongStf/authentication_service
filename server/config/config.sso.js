@@ -1,4 +1,9 @@
-const BASE_URL = process.env.DEV_URL_API || process.env.PROD_URL_API
+let BASE_URL = ''
+if (process.env.NODE_ENV === 'production') {
+  BASE_URL = process.env.PROD_URL_API
+} else {
+  BASE_URL = process.env.DEV_URL_API
+}
 module.exports = {
   'facebookAuth': {
     'clientID': '2086263614924092',

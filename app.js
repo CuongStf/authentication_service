@@ -1,8 +1,6 @@
 const express = require('express')
 const app = express()
 
-const path = require('path')
-const favicon = require('serve-favicon')
 const logger = require('morgan')
 const bodyParser = require('body-parser')
 const mongoose = require('mongoose')
@@ -87,7 +85,12 @@ const bookRoute = require('./server/routes/book.route.js')
 const userRoute = require('./server/routes/user.route.js')
 app.use('/book', bookRoute)
 app.use('/log', userRoute)
-const BASE_URL = process.env.DEV_URL_API || process.env.PROD_URL_API
+let BASE_URL = ''
+if (process.env.NODE_ENV === 'production') {
+  BASE_URL = process.env.PROD_URL_API
+} else {
+  BASE_URL = process.env.DEV_URL_API
+}
 
 app.get('/', (req, res, next) => {
   let randomStr = uuid()

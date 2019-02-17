@@ -7,7 +7,7 @@
     "start": "node ./bin/www",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
     "build": "node build/build.js",
-    "devstart": "nodemon ./bin/www"
+    "devstart": "nodemon --inspect ./bin/www"
   },
   "author": "CuongCoder <nguyenmanhcuong221298@gmail.com>",
   "license": "ISC",

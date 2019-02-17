@@ -29,7 +29,6 @@ module.exports = function (passport) {
     callbackURL: configAuth.facebookAuth.callbackURL
 
   }, (accessToken, refreshToken, profile, done) => {
-    console.log(profile)
     process.nextTick(function () {
       User.findOne({
         'facebook.id': profile.id

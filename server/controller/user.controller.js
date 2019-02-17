@@ -83,8 +83,8 @@ module.exports.signin = async (req, res, next) => {
               data: {
                 username: user.username,
                 id: user._id
-              },
-              exp: Math.floor(Date.now() / 1000) + (60 * 60)
+              }
+              // exp: Math.floor(Date.now() / 1000) + (60 * 60)
             }, process.env.SECRET_KEY)
           })
         }

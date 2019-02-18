@@ -1,0 +1,39 @@
+extends layouts/common.pug
+block content
+  .row.mt-10
+    h3.col Products
+    .col-4
+      .input-group.mb-3
+        input.form-control(type='text', placeholder='Search', aria-label='Example text with button addon', aria-describedby='button-addon1')
+        .input-group-append
+          button#button-addon1.btn.btn-outline-secondary(type='button') 
+  .row
+    each product in products
+      .col-3.mb-10
+        .card
+          img.card-img-top(src= product.image, alt='...')
+          .card-body
+            h5.card-title= product.name
+            p.card-text
+              = product.description
+            h6= product.price
+            button(class="btn btn-outline-primary")
+              a(href="cart/addToCart/" + product.id)
+                Add to Cart
+
+  .row
+    .col
+      nav(aria-label='Page navigation example')
+        ul.pagination.justify-content-center
+          li.page-item(class= (page-1) < minPage? 'disabled':'')
+            a.page-link(href='/products?page='+ (page-1), aria-label='Previous')
+              span(aria-hidden='true') &laquo;
+          li.page-item(class= (page-1) < minPage? 'hide':'')
+            a.page-link(href='/products?page='+ (page-1))= page - 1
+          li.page-item(class= (page) === 1? 'disabled':'')
+            a.page-link(href='/products?page='+ page)= page
+          li.page-item(class= (page+1) > maxPage? 'hide':'')
+            a.page-link(href='/products?page='+ (page+1))= page + 1
+          li.page-item(class= (page+1) > maxPage? 'disabled':'')
+            a.page-link(href='/products?page='+ (page+1), aria-label='Next')
+              span(aria-hidden='true') &raquo;

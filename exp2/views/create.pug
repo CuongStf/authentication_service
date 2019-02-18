@@ -1,0 +1,17 @@
+extends layouts/common.pug
+block content
+  div(class="jumbotron")
+    if errors
+      each error in errors
+        .alert.alert-danger= error
+    form(action="/users/create", method="POST", enctype="multipart/form-data")
+      .form-group
+        label(for="username") Name: 
+        input#username.form-control(type="text", name: "name", value=value?value.name:'', placeholder="user name")
+      .form-group
+        label(for="pass") Birthday:
+        input#pass.form-control(type="number", name="birthday", value=value?value.birthday:'', placeholder="birthday")
+      .form-group
+        label(for="avatar") Avatar:
+        input#avatar.form-control-file(type="file", name="avatar")
+      button.btn.btn-primary Register

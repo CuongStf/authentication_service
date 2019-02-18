@@ -1,0 +1,16 @@
+extends layouts/common.pug
+block content
+  div(class="jumbotron")
+    if errors
+      each error in errors
+        .alert.alert-danger= error
+    h3 Login Form
+    form(action="/login", method="POST")
+      .form-group
+        label(for='exampleInputEmail1') Email address
+        input#exampleInputEmail1.form-control(type='text', name="username", value=value?value.username:'', placeholder='Enter email')
+      .form-group
+        label(for='exampleInputPassword1') Password
+        input#exampleInputPassword1.form-control(type='password', value=value?value.password:'', name="password", placeholder='Password')
+      .form-group.form-check
+      button.btn.btn-primary(type='submit') Submit

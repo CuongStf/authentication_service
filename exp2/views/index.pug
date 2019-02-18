@@ -1,0 +1,15 @@
+extends layouts/common.pug
+block content
+  div(class="jumbotron")
+    form(action="/users/search", method="GET")
+      input(type="text" name="name" value=keyworkSearch)
+      button Search
+    ul
+      each user in listUsers
+        li= user.name
+        button(class="btn btn-outline-success")
+          a(href="/users/" + user.id) Detail
+    a(href="/") Go to Home
+    br
+    button.btn.btn-outline-primary
+      a(href="/users/create") Create User

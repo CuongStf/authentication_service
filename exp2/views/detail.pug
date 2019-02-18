@@ -1,0 +1,7 @@
+extends layouts/common.pug
+block content
+  div(class="jumbotron")
+    h1= user.id
+    h3= user.name
+    strong= user.birthday
+    img(src=user.avatar?'/' + user.avatar:'/')

@@ -19,7 +19,7 @@ module.exports.signup = (req, res, next) => {
   } else {
     // check email exist
     UserModel.countDocuments({
-      username: req.body.username
+      'local.username': req.body.username
     }, function (err, numberDuplicate) {
       if (err) {
         throw err
@@ -33,14 +33,16 @@ module.exports.signup = (req, res, next) => {
           bcrypt.hash(req.body.password, 10, function (err, hash) {
             if (!err) {
               try {
-                req.body.password = hash
-                let newUser = new UserModel(req.body)
+                let newUser = new UserModel()
+                newUser.local.username = req.body.username
+                newUser.local.password = hash
                 newUser.save((err, user) => {
                   if (err) {
                     res.json(err)
                   } else {
                     res.json({
-                      message: 'Register successfully!'
+                      message: 'Register successfully!',
+                      data: user
                     })
                   }
                 })

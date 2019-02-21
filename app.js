@@ -54,16 +54,17 @@ app.use(function (req, res, next) {
 
 // config middleware assign session id
 app.use(session({
-  genid: (req) => {
-    return uuid() // use UUIDs for session IDs
-  },
-  secret: 'keyboard cat',
+  key: 'user_sid',
+  secret: 'goN6DJJC6E287cC77kkdYuNuAyWnz7Q3iZj8',
   resave: false,
-  saveUninitialized: true
+  saveUninitialized: false,
+  cookie: {
+    expires: 600000
+  }
 }))
 
 // middleware check token except route sign up, sign in
-const verifyToken = require('./server/middleware/verifyToken.middleware')
+// const verifyToken = require('./server/middleware/verifyToken.middleware')
 // app.use(verifyToken)
 
 // connect db
@@ -80,11 +81,6 @@ db.once('open', () => {
   console.log('connect successfully!')
 })
 
-// declare router
-const bookRoute = require('./server/routes/book.route.js')
-const userRoute = require('./server/routes/user.route.js')
-app.use('/book', bookRoute)
-app.use('/log', userRoute)
 let BASE_URL = ''
 if (process.env.NODE_ENV === 'production') {
   BASE_URL = process.env.PROD_URL_API
@@ -103,9 +99,11 @@ app.get('/', (req, res, next) => {
 
 const isLoggedIn = require('./server/middleware/isLoggedIn.middleware')
 var passport = require('passport')
-require('./server/config/passport')(passport)
+var flash = require('connect-flash')
+require('./server/controller/auth.controller')(passport)
 app.use(passport.initialize())
 app.use(passport.session()) // persistent login sessions
+app.use(flash())
 // =====================================
 // PROFILE SECTION =========================
 // =====================================
@@ -115,10 +113,12 @@ app.get('/profile', isLoggedIn, function (req, res) {
   res.send(req.user)
 })
 
-// =====================================
-// FACEBOOK ROUTES =====================
-// =====================================
-// route for facebook authentication and login
+// declare router
+const bookRoute = require('./server/routes/book.route.js')
+const userRoute = require('./server/routes/user.route.js')
+app.use('/book', bookRoute)
+app.use('/log', userRoute)
+
 app.get('/auth/facebook', passport.authenticate('facebook'))
 
 // handle the callback after facebook has authenticated the user
@@ -139,4 +139,10 @@ app.get('/auth/google/callback',
     failureRedirect: '/'
   }))
 
+app.post('/auth/login',
+  passport.authenticate('local', {
+    successRedirect: '/profile',
+    failureFlash: true
+  })
+)
 module.exports = app

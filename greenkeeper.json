@@ -1,0 +1,10 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "exp2/package.json",
+        "package.json"
+      ]
+    }
+  }
+}

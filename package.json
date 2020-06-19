@@ -6,8 +6,8 @@
   "scripts": {
     "start": "node ./bin/www",
     "lint": "eslint --ext .js,.vue src test/unit/specs test/e2e/specs",
-    "build": "node ./bin/www --env production",
-    "devstart": "nodemon --inspect ./bin/www"
+    "devstart": "nodemon --inspect ./bin/www",
+    "build": "node app.js"
   },
   "author": "CuongCoder <nguyenmanhcuong221298@gmail.com>",
   "license": "ISC",
